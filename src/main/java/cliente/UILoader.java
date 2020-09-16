@@ -22,7 +22,10 @@ public class UILoader {
             throw new FileNotFoundException(
                     String.format("%s not found at %s.", uiFilename, getClass().getResource("/")));
 
-        this.root = FXMLLoader.load(uiFilepath);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(uiFilepath);
+        loader.setController(new Controller());
+        this.root = loader.load();
     }
 
     public void load(Stage stage){
