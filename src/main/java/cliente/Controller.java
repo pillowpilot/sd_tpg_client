@@ -1,6 +1,9 @@
 package cliente;
 
+import cliente.models.ChatMessage;
+import cliente.models.Contact;
 import cliente.models.DataModel;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -13,13 +16,29 @@ import javafx.scene.control.TextArea;
 public class Controller {
     private DataModel dataModel;
 
-    public ListView contacts = null;
+    public ListView<Contact> contacts = null;
+    public TextArea chatTextArea = null;
     public TextArea messageInput = null;
     public Button sendBtn = null;
 
     public void setDataModel(DataModel dataModel) {
         this.dataModel = dataModel;
+
         contacts.setItems(dataModel.getContacts());
+
+        dataModel.getChatMessages().addListener(new ListChangeListener<ChatMessage>() {
+            @Override
+            public void onChanged(Change<? extends ChatMessage> c) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for(ChatMessage chatMessage: c.getList()) {
+                    System.out.println(chatMessage);
+                    stringBuilder.append(chatMessage);
+                    stringBuilder.append("\n");
+                }
+
+                chatTextArea.setText(stringBuilder.toString());
+            }
+        });
     }
 
     /**

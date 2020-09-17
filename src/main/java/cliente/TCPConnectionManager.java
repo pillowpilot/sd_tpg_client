@@ -12,7 +12,8 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Administra una conexión TCP con el servidor.
  * Se implementa en su propio hilo y recibe los mensajes en JSON para su envío.
- * @see <a href="https://www.baeldung.com/a-guide-to-java-sockets">Detalles</a>
+ * @see <a href="https://www.baeldung.com/a-guide-to-java-sockets">Detalles sobre sockets</a>
+ * @see <a href="https://www.baeldung.com/java-blocking-queue">Detalles sobre productor-consumidor</a>
  */
 public class TCPConnectionManager implements Runnable{
     private Socket socket;
