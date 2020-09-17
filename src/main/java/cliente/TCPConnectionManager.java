@@ -57,11 +57,22 @@ public class TCPConnectionManager implements Runnable{
             keepRunning = true;
             while (keepRunning) {
 
+                if(!pendingMessagesToSend.isEmpty())
+                    out.println(pendingMessagesToSend.take()); // .take() is blocking
+
+                String receivedMessage = in.readLine(); // Blocking // TODO Find an non-blocking reading method!
+                if(receivedMessage == null)
+                    keepRunning = false;
+                else {
+                    System.out.println("In client: received " + receivedMessage);
+                    pendingMessagesToReceive.add(receivedMessage);
+                }
+
             }
 
             stopConnection();
             System.out.println("Connection ended.");
-        }catch (IOException ex) { // TODO Find a better way to deal with exceptions
+        }catch (IOException | InterruptedException ex) { // TODO Find a better way to deal with exceptions
             ex.printStackTrace();
         }
     }
