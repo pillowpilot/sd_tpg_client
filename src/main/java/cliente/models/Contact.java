@@ -1,21 +1,41 @@
 package cliente.models;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Objecto de dominio que representa a un contacto disponible.
  */
 public class Contact {
-    private String username;
+    private @NotNull String username; // This must be unique
 
-    public Contact(String username) {
+    public Contact(@NotNull String username) {
         this.username = username;
     }
 
-    public String getUsername() {
+    public @NotNull String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NotNull String username) {
         this.username = username;
+    }
+
+    /**
+     * Verifica igualdad.
+     * @see <a href="https://www.baeldung.com/java-equals-hashcode-contracts">Detalles</a>
+     * @param o Objeto contra el cual verificar
+     * @return Verdadero si {@code o} es un Contact y posee el mismo nombre de usuario, falso sino.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if( o == this )
+            return true;
+
+        if( !( o instanceof Contact ) )
+            return false;
+
+        Contact other = (Contact) o;
+        return this.username.equals(other.username);
     }
 
     /**

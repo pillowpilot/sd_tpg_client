@@ -1,10 +1,11 @@
-package cliente;
+package cliente.uiloaders;
 
+import cliente.controllers.ChatController;
 import cliente.models.DataModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,33 +15,31 @@ import java.net.URL;
  * Carga la interfaz gráfica desde el archivo FXML.
  * @see <a href="https://docs.oracle.com/javafx/2/get_started/fxml_tutorial.htm">Detalles</a>
  */
-public class UILoader {
+public class ChatUILoader {
     private Parent root;
+    private Scene scene;
 
-    public UILoader(String uiFilename) throws IOException {
-        URL uiFilepath = getClass().getResource(uiFilename);
+    public ChatUILoader(String uiFilename, DataModel dataModel) throws IOException {
+        @Nullable URL uiFilepath = getClass().getResource(uiFilename);
         if(uiFilepath == null)
             throw new FileNotFoundException(
-                    String.format("%s not found at %s.", uiFilename, getClass().getResource("/")));
+                    String.format("%s not found at %s.", uiFilename, getClass().getResource("/"))
+            );
 
-        Controller controller = new Controller();
+        ChatController chatController = new ChatController();
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(uiFilepath);
-        loader.setController(controller);
+        loader.setController(chatController);
         this.root = loader.load();
 
         // Delay call to Controller.setDataModel to allow JavaFX to initialize public members of Controller
-        DataModel dataModel = new DataModel();
-        controller.setDataModel(dataModel);
+        chatController.setDataModel(dataModel);
+
+        this.scene = new Scene(root);
     }
 
-    public void load(Stage stage){
-        Scene scene = new Scene(root);
-
-        stage.setTitle("FXML Welcome"); // TODO Param to FXML
-        stage.setScene(scene);
-        stage.show();
+    public Scene getScene() {
+        return scene;
     }
-
 }
