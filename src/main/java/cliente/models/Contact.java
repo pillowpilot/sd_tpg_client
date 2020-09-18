@@ -9,7 +9,9 @@ public class Contact {
     public Contact(String username) {
         this.username = username;
     }
-
+    public Contact() {
+        
+    }
     public String getUsername() {
         return username;
     }
