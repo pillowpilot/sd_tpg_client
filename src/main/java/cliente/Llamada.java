@@ -17,6 +17,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,10 +28,11 @@ import java.util.logging.Logger;
 public class Llamada implements Runnable{
     private boolean On_going_call;
     private Socket S;
-    private String emisor;
-    private String receptor;
-
-    public Llamada(boolean On_going_call, Socket S, String emisor, String receptor) {
+    private Integer emisor;
+    private Integer receptor;
+    private volatile AtomicBoolean Out_fin_flag = new AtomicBoolean();
+     private volatile AtomicBoolean In_fin_flag = new AtomicBoolean();
+    public Llamada(boolean On_going_call, Socket S, Integer emisor, Integer receptor) {
         this.On_going_call = On_going_call;
         this.S = S;
         this.emisor = emisor;
@@ -49,11 +51,11 @@ public class Llamada implements Runnable{
     
     }
 
-    public void setEmisor(String emisor) {
+    public void setEmisor(Integer emisor) {
         this.emisor = emisor;
     }
 
-    public void setReceptor(String receptor) {
+    public void setReceptor(Integer receptor) {
         this.receptor = receptor;
     }
 
@@ -73,11 +75,11 @@ public class Llamada implements Runnable{
         return S;
     }
 
-    public String getEmisor() {
+    public Integer getEmisor() {
         return emisor;
     }
 
-    public String getReceptor() {
+    public Integer getReceptor() {
         return receptor;
     }
       @Override
@@ -99,40 +101,67 @@ public class Llamada implements Runnable{
 
             
                 
-           Thread sendMessage = new Thread(new Runnable(){ 
+           Thread SendingMsg = new Thread(new Runnable(){ 
             @Override
             public void run() { 
                 String mnsjleido;
-                 PrintWriter out;
+                 PrintWriter out = null;
+              
                 try {
                     out = new PrintWriter(S.getOutputStream(), true);
-                    while (On_going_call) { 
+                    while (!In_fin_flag.get()) { 
                         
                         mnsjleido = scn.nextLine();
+                        
+                        
                         if(mnsjleido =="bye"){
                             mensajeE.setTipo_operacion("4");
-                        }
-                        mensajeE.setTexto(mnsjleido);
-                        
-                                       
-                        try { 
+                            mensajeE.setTexto(mnsjleido);
+                            
+                            
+                            try { 
 
-                          String envia = jsonMapper.writeValueAsString(mensajeE);
-                          out.println(envia);
-                        } catch (IOException e) { 
-                            e.printStackTrace(); 
-                        } 
-                    } 
-                out.close();
+                                String envia = jsonMapper.writeValueAsString(mensajeE);
+                                out.println(envia);
+                            } catch (IOException e) { 
+                                  e.printStackTrace(); 
+                            }
+                            synchronized(Out_fin_flag){
+                                Out_fin_flag.set(true);
+                            }
+                            In_fin_flag.set(true);
+                            
+                        }else{
+                            mensajeE.setTexto(mnsjleido);
+                            
+                            
+                            try { 
+
+                                String envia = jsonMapper.writeValueAsString(mensajeE);
+                                out.println(envia);
+                            } catch (IOException e) { 
+                                  e.printStackTrace(); 
+                            }
+                        
+                        }
+                        
+                        
+                                   
+                        
+                    
+                    }
+               
                 } catch (IOException ex) {
                     Logger.getLogger(Llamada.class.getName()).log(Level.SEVERE, null, ex);
+                }finally{
+                     out.close();
                 }
                 
-            } 
+            }
         }); 
                 
              
-             Thread readMessage = new Thread(new Runnable()  
+             Thread IncomingMsg = new Thread(new Runnable()  
         { 
             @Override
             public void run() { 
@@ -140,14 +169,19 @@ public class Llamada implements Runnable{
                 try {
                     MensajeLlamada mensajeR = new MensajeLlamada();
                     in = new BufferedReader(new InputStreamReader(S.getInputStream()));
-                    while (On_going_call) {
+                    while (Out_fin_flag.get()) {
                         try {
                             
                             String recibio = in.readLine();
                             mensajeR = jsonMapper.readValue(recibio, MensajeLlamada.class);
                             if(mensajeR.getTipo_operacion()=="4"){
                                 System.out.println("bye....Se ha cortado la llamada");
-                                On_going_call=false;
+                                synchronized(In_fin_flag){
+                                    In_fin_flag.set(true);
+                                }
+                                Out_fin_flag.set(true);
+                            
+                            
                             }else{
                                 System.out.println(mensajeR.getTexto());
                                 
@@ -168,8 +202,8 @@ public class Llamada implements Runnable{
                 
                 
               
-            sendMessage.start();
-            readMessage.start();
+            SendingMsg.start();
+            IncomingMsg.start();
        
            
             
@@ -179,7 +213,8 @@ public class Llamada implements Runnable{
             
         }
      private void stopCall(){
-        this.On_going_call=false;
+        Out_fin_flag.set(true);
+        In_fin_flag.set(true);
         try {
             this.S.close();
         } catch (IOException ex) {

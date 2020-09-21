@@ -1,12 +1,12 @@
 
 
-import cliente.models.Contact;
-import cliente.models.MensajeListaCliente;
+import cliente.models.ClienteDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import py.com.fpuna.servidor.extra.EstandarDTO;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +23,7 @@ public class UDPListaCliServer {
         
         // Variables
         int puertoServidor = 9876;
-        ArrayList<Contact> contactos = new ArrayList<Contact>();
+        ArrayList<ClienteDTO> contactos = new ArrayList<ClienteDTO>();
         
         try {
             //1) Creamos el socket Servidor de Datagramas (UDP)
@@ -58,22 +58,22 @@ public class UDPListaCliServer {
                 ObjectMapper jsonMapper = new ObjectMapper();
                
               
-                MensajeListaCliente mensaje = jsonMapper.readValue(datoRecibido, MensajeListaCliente.class);
+                EstandarDTO<ArrayList<ClienteDTO>>  mensaje = jsonMapper.readValue(datoRecibido, EstandarDTO.class);
                
               
                 InetAddress IPAddress = receivePacket.getAddress();
 
                 int port = receivePacket.getPort();
                //OJO a multiples llamadas al servidor, se repetiran los nombres
-               Contact c1 = new Contact("Juan");
-               Contact c2 = new Contact("Mirta");
-               Contact c3 = new Contact("Carlos");
+               ClienteDTO c1 = new ClienteDTO(0,"Juan","Gonzalez","JG","127.0.0.2",8080);
+                ClienteDTO c2 = new ClienteDTO(1,"Marta","Perez","MP","127.0.0.3",8080);
+                ClienteDTO c3 = new ClienteDTO(2,"Antonio","Acuña","AA","127.0.0.20",8080);
                contactos.add(c1);
                contactos.add(c2);
                contactos.add(c3);
 
                 
-                mensaje.setContactos(contactos);
+                mensaje.setCuerpo(contactos);
                 mensaje.setEstado("0");
                 mensaje.setMensaje("ok");
                 mensaje.setTipo_operacion("1");

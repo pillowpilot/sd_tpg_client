@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 public class IniciarLlamada implements Runnable{
     String ip;
     int puerto;
-    String emisor;
-    String receptor;
+    Integer emisor;
+    Integer receptor;
     @Override
     public void run() {
         

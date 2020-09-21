@@ -3,8 +3,8 @@
  */
 package cliente;
 
+import cliente.models.ClienteDTO;
 import cliente.models.Contact;
-import cliente.models.MensajeListaCliente;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
@@ -16,13 +16,15 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import py.com.fpuna.servidor.extra.EstandarDTO;
 
 
 /**
  *
  * @author modesto
  */
-public class UDPListaContactos implements Runnable {
+public class UDPListaContactos implements Callable<ArrayList<ClienteDTO>> {
     private int puertoServidor;
     private String direccion_Servidor;
 
@@ -46,19 +48,15 @@ public class UDPListaContactos implements Runnable {
         this.puertoServidor = puertoServidor;
         this.direccion_Servidor = direccion_Servidor;
     }
-    
-     public static void main(String a[]) throws Exception {
-       
-         
-         
-    }
+ 
 
     @Override
-    public void run() {
-       // UDPListaContactos clienteE = new UDPListaContactos(9876,"127.0.0.1");
+    public ArrayList<ClienteDTO> call()  {
+            // UDPListaContactos clienteE = new UDPListaContactos(9876,"127.0.0.1");
        
          
          ObjectMapper JsonMapper = new ObjectMapper();
+         EstandarDTO<ArrayList<ClienteDTO>> Contacts = new EstandarDTO();
         try {
             
             BufferedReader inFromUser =
@@ -73,16 +71,16 @@ public class UDPListaContactos implements Runnable {
             byte[] receiveData = new byte[1024];
             
   
-         
+          
             
-            MensajeListaCliente Contacts = new MensajeListaCliente();
+           
             Contacts.setEstado("-1");
             Contacts.setMensaje("ok");
             Contacts.setTipo_operacion("1");
             
             String Data = JsonMapper.writeValueAsString(Contacts);
             sendData = Data.getBytes();
-           System.out.println(Data);
+            System.out.println(Data);
             DatagramPacket sendPacket =
                     new DatagramPacket(sendData, sendData.length, IPAddress, this.puertoServidor);
 
@@ -102,11 +100,11 @@ public class UDPListaContactos implements Runnable {
              
                
               
-                Contacts = JsonMapper.readValue(respuesta, MensajeListaCliente.class);
+                Contacts = JsonMapper.readValue(respuesta, EstandarDTO.class);
                 
                
                   //Imprime el arraylist de contactos
-               System.out.println(Contacts.getContactos());
+               System.out.println(Contacts.getCuerpo());
                
 
             } catch (SocketTimeoutException ste) {
@@ -114,11 +112,13 @@ public class UDPListaContactos implements Runnable {
                 System.out.println("TimeOut: El paquete udp se asume perdido.");
             }
             clientSocket.close();
+            
         } catch (UnknownHostException ex) {
             System.err.println(ex);
         } catch (IOException ex) {
             System.err.println(ex);
         }
+        return Contacts.getCuerpo();
     }
 
      

@@ -13,11 +13,11 @@ public class MensajeLlamada {
      private String estado;
     private String mensaje;
     private String tipo_operacion;
-    private String emisor;
-    private String receptor;
+    private Integer emisor;
+    private Integer receptor;
     private String texto;
 
-    public MensajeLlamada(String estado, String mensaje, String tipo_operacion, String emisor, String receptor, String texto) {
+    public MensajeLlamada(String estado, String mensaje, String tipo_operacion, Integer emisor, Integer receptor, String texto) {
         this.estado = estado;
         this.mensaje = mensaje;
         this.tipo_operacion = tipo_operacion;
@@ -41,11 +41,11 @@ public class MensajeLlamada {
         return tipo_operacion;
     }
 
-    public String getEmisor() {
+    public Integer getEmisor() {
         return emisor;
     }
 
-    public String getReceptor() {
+    public Integer getReceptor() {
         return receptor;
     }
 
@@ -65,11 +65,11 @@ public class MensajeLlamada {
         this.tipo_operacion = tipo_operacion;
     }
 
-    public void setEmisor(String emisor) {
+    public void setEmisor(Integer emisor) {
         this.emisor = emisor;
     }
 
-    public void setReceptor(String receptor) {
+    public void setReceptor(Integer receptor) {
         this.receptor = receptor;
     }
 
