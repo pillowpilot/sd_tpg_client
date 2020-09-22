@@ -17,7 +17,9 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import py.com.fpuna.servidor.extra.EstandarDTO;
+import cliente.models.EstandarDTO;
+import cliente.models.MensajeListaCliente;
+import cliente.models.MensajeLlamada;
 
 
 /**
@@ -27,7 +29,7 @@ import py.com.fpuna.servidor.extra.EstandarDTO;
 public class UDPListaContactos implements Callable<ArrayList<ClienteDTO>> {
     private int puertoServidor;
     private String direccion_Servidor;
-
+    
     public int getPuertoServidor() {
         return puertoServidor;
     }
@@ -56,7 +58,7 @@ public class UDPListaContactos implements Callable<ArrayList<ClienteDTO>> {
        
          
          ObjectMapper JsonMapper = new ObjectMapper();
-         EstandarDTO<ArrayList<ClienteDTO>> Contacts = new EstandarDTO();
+         MensajeListaCliente Contacts = new MensajeListaCliente();
         try {
             
             BufferedReader inFromUser =
@@ -100,7 +102,7 @@ public class UDPListaContactos implements Callable<ArrayList<ClienteDTO>> {
              
                
               
-                Contacts = JsonMapper.readValue(respuesta, EstandarDTO.class);
+                Contacts = JsonMapper.readValue(respuesta, MensajeListaCliente.class);
                 
                
                   //Imprime el arraylist de contactos
