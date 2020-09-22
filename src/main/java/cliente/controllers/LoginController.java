@@ -1,5 +1,6 @@
 package cliente.controllers;
 
+import cliente.asyncTasks.KeepAvailableContactsUpdated;
 import cliente.models.DataModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -37,6 +38,10 @@ public class LoginController {
             // TODO Fix dependencies direction
             primaryStage.setTitle("Chat");
             primaryStage.setScene(dataModel.getSceneMapping().get("chat"));
+
+            // TODO Separate this into a more appropiate class
+            KeepAvailableContactsUpdated contactsUpdater = new KeepAvailableContactsUpdated();
+            dataModel.scheduleAtFixedRate(contactsUpdater, 1000L); // TODO Extract 1000L
 
         }else{
             String invalidUsernameMessage = "El nombre de usuario no es válido.";
