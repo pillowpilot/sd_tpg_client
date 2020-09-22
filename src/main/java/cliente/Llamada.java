@@ -6,6 +6,9 @@
 package cliente;
 
 
+import cliente.models.ClienteDTO;
+import cliente.models.Contact;
+import cliente.models.DataModel;
 import cliente.models.MensajeLlamada;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +23,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import cliente.models.ChatMessage;
+
 
 /**
  *
@@ -28,36 +33,32 @@ import java.util.logging.Logger;
 public class Llamada implements Runnable{
     private boolean On_going_call;
     private Socket S;
-    private Integer emisor;
-    private Integer receptor;
+    private String nombreUsuario_emisor;
+    private String nombreUsuario_receptor;
+    private Integer id_emisor;
+    private Integer id_receptor;
     private volatile AtomicBoolean Out_fin_flag = new AtomicBoolean();
-     private volatile AtomicBoolean In_fin_flag = new AtomicBoolean();
-    public Llamada(boolean On_going_call, Socket S, Integer emisor, Integer receptor) {
-        this.On_going_call = On_going_call;
-        this.S = S;
-        this.emisor = emisor;
-        this.receptor = receptor;
-    }
+    private volatile AtomicBoolean In_fin_flag = new AtomicBoolean();
+    private DataModel datamodel; 
+     
+     
+   
 
     public Llamada() {
     }
 
+    public Llamada(boolean On_going_call, Socket S, String n_emisor, String n_receptor, Integer id_emisor, Integer id_receptor, DataModel datamodel) {
+        this.On_going_call = On_going_call;
+        this.S = S;
+        this.nombreUsuario_emisor = n_emisor;
+        this.nombreUsuario_receptor = n_receptor;
+        this.id_emisor = id_emisor;
+        this.id_receptor = id_receptor;
+        this.datamodel = datamodel;
+    }
+    
 
  
-    
-    
-    public static void main(String a[]) throws Exception {
-       
-    
-    }
-
-    public void setEmisor(Integer emisor) {
-        this.emisor = emisor;
-    }
-
-    public void setReceptor(Integer receptor) {
-        this.receptor = receptor;
-    }
 
     public void setOn_going_call(boolean On_going_call) {
         this.On_going_call = On_going_call;
@@ -75,13 +76,7 @@ public class Llamada implements Runnable{
         return S;
     }
 
-    public Integer getEmisor() {
-        return emisor;
-    }
 
-    public Integer getReceptor() {
-        return receptor;
-    }
       @Override
     public void run() {
         
@@ -93,13 +88,14 @@ public class Llamada implements Runnable{
           
 
         MensajeLlamada mensajeE = new MensajeLlamada();
-        mensajeE.setEmisor(this.emisor);
-        mensajeE.setReceptor(this.receptor);
+        mensajeE.setEmisor(this.id_emisor);
+        mensajeE.setReceptor(this.id_receptor);
         mensajeE.setMensaje("ok");
         mensajeE.setTipo_operacion("3");
         mensajeE.setEstado("0");
-
-            
+        
+        Contact origen = new Contact(this.nombreUsuario_emisor);
+        Contact destino = new Contact(this.nombreUsuario_receptor);
                 
            Thread SendingMsg = new Thread(new Runnable(){ 
             @Override
@@ -113,6 +109,8 @@ public class Llamada implements Runnable{
                         
                         mnsjleido = scn.nextLine();
                         
+                  
+                        datamodel.getChatMessages().add(new ChatMessage(origen, mnsjleido));
                         
                         if(mnsjleido =="bye"){
                             mensajeE.setTipo_operacion("4");
@@ -169,13 +167,15 @@ public class Llamada implements Runnable{
                 try {
                     MensajeLlamada mensajeR = new MensajeLlamada();
                     in = new BufferedReader(new InputStreamReader(S.getInputStream()));
-                    while (Out_fin_flag.get()) {
+                    while (!Out_fin_flag.get()) {
+
                         try {
                             
                             String recibio = in.readLine();
                             mensajeR = jsonMapper.readValue(recibio, MensajeLlamada.class);
                             if(mensajeR.getTipo_operacion()=="4"){
                                 System.out.println("bye....Se ha cortado la llamada");
+                                datamodel.getChatMessages().add(new ChatMessage(destino, "bye\n Se ha cortado la llamada"));
                                 synchronized(In_fin_flag){
                                     In_fin_flag.set(true);
                                 }
@@ -185,12 +185,13 @@ public class Llamada implements Runnable{
                             }else{
                                 System.out.println(mensajeR.getTexto());
                                 
+                                datamodel.getChatMessages().add(new ChatMessage(destino, mensajeR.getTexto()));
                             }
                         } catch (IOException e) {
                             
                             e.printStackTrace();
                         } 
-                    }   in.close();
+                    }   
                 } catch (IOException ex) {
                     Logger.getLogger(Llamada.class.getName()).log(Level.SEVERE, null, ex);
                 } 

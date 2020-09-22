@@ -17,7 +17,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import py.com.fpuna.servidor.extra.EstandarDTO;
+import cliente.models.EstandarDTO;
 
 
 /**
@@ -27,7 +27,7 @@ import py.com.fpuna.servidor.extra.EstandarDTO;
 public class UDPListaContactos implements Callable<ArrayList<ClienteDTO>> {
     private int puertoServidor;
     private String direccion_Servidor;
-
+    
     public int getPuertoServidor() {
         return puertoServidor;
     }

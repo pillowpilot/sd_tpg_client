@@ -6,7 +6,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import py.com.fpuna.servidor.extra.EstandarDTO;
+import cliente.models.EstandarDTO;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

@@ -68,7 +68,7 @@ public class TCPConnectionManager implements Runnable{
                     System.out.println("In client: received " + receivedMessage);
                     pendingMessagesToReceive.add(receivedMessage);
                 }
-
+            
             }
 
             stopConnection();
