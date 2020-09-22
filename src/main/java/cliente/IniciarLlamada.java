@@ -85,7 +85,7 @@ public class IniciarLlamada implements Runnable{
             
             ObjectMapper jsonMapper = new ObjectMapper();
             
-            MensajeLlamada mensaje = new MensajeLlamada("-1","ok","2",this.emisor,this.receptor,"") ;
+            MensajeLlamada mensaje = new MensajeLlamada("-1","ok","2",this.id_emisor,this.id_receptor,"") ;
             
             s = new Socket(ip, this.puerto);
             
