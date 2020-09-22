@@ -9,6 +9,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * Domain Model Object que modela las solicitudes del cliente, útil para aplicar el patrón visitante.
  */
 public class Request {
+    @JsonProperty("estado")
+    private Integer state;
+    @JsonProperty("mensaje")
+    private String message;
     @JsonProperty("tipo_operacion")
     private String operationType;
 
@@ -21,6 +25,22 @@ public class Request {
     private Payload payload;
 
     public Request() {
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getOperationType() {
@@ -42,7 +62,9 @@ public class Request {
     @Override
     public String toString() {
         return "Request{" +
-                "operationType='" + operationType + '\'' +
+                "state=" + state +
+                ", message='" + message + '\'' +
+                ", operationType='" + operationType + '\'' +
                 ", payload=" + payload +
                 '}';
     }

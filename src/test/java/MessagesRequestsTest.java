@@ -16,10 +16,16 @@ public class MessagesRequestsTest {
         final String username = "a random username";
         payload.setUsername(username);
         Request request = new Request();
+        request.setState(0);
+        request.setMessage("ok");
         request.setOperationType("5");
         request.setPayload(payload);
 
         final String json_message = marshaller.toJSON(request);
+        assertTrue(json_message.contains("estado"));
+        assertTrue(json_message.contains("0"));
+        assertTrue(json_message.contains("mensaje"));
+        assertTrue(json_message.contains("ok"));
         assertTrue(json_message.contains("tipo_operacion"));
         assertTrue(json_message.contains("5"));
         assertTrue(json_message.contains("usuario"));
@@ -30,10 +36,12 @@ public class MessagesRequestsTest {
 
     @Test
     public void registrationAttemptUnmarshalling() throws IOException {
-        final String json_message = "{\"tipo_operacion\":\"5\",\"cuerpo\":{\"usuario\":\"a random username\"}}";
+        final String json_message = "{\"estado\":0,\"mensaje\":\"ok\",\"tipo_operacion\":\"5\",\"cuerpo\":{\"usuario\":\"a random username\"}}";
         RequestUnmarshaller unmarshaller = new RequestUnmarshaller();
         Request request = unmarshaller.fromJSON(json_message);
 
+        assertEquals(request.getState(), 0);
+        assertEquals(request.getMessage(), "ok");
         assertEquals(request.getOperationType(), "5");
         // Notar que Jackson deserializa a la subclase correcta
         assertEquals(request.getPayload().getClass(), RegistrationAttemptPayload.class);
@@ -51,10 +59,16 @@ public class MessagesRequestsTest {
         final String username = "an username";
         payload.setUsername(username);
         Request request = new Request();
+        request.setState(0);
+        request.setMessage("ok");
         request.setOperationType("1");
         request.setPayload(payload);
 
         final String json_message = marshaller.toJSON(request);
+        assertTrue(json_message.contains("estado"));
+        assertTrue(json_message.contains("0"));
+        assertTrue(json_message.contains("mensaje"));
+        assertTrue(json_message.contains("ok"));
         assertTrue(json_message.contains("tipo_operacion"));
         assertTrue(json_message.contains("1"));
         assertTrue(json_message.contains("usuario"));
@@ -65,10 +79,12 @@ public class MessagesRequestsTest {
 
     @Test
     public void availableContactsUnmarshalling() throws IOException {
-        final String json_message = "{\"tipo_operacion\":\"1\",\"cuerpo\":{\"usuario\":\"an username\"}}";
+        final String json_message = "{\"estado\":0,\"mensaje\":\"ok\",\"tipo_operacion\":\"1\",\"cuerpo\":{\"usuario\":\"an username\"}}";
         RequestUnmarshaller unmarshaller = new RequestUnmarshaller();
         Request request = unmarshaller.fromJSON(json_message);
 
+        assertEquals(request.getState(), 0);
+        assertEquals(request.getMessage(), "ok");
         assertEquals(request.getOperationType(), "1");
         // Notar que Jackson deserializa a la subclase correcta
         assertEquals(request.getPayload().getClass(), AvailableContactsPayload.class);
