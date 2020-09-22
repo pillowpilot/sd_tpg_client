@@ -1,24 +1,39 @@
 package cliente.models;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Scene;
-
-import java.util.Map;
 
 public class DataModel {
-    private Map<String, Scene> sceneMapping;
-    private final ObservableList<Contact> contacts = FXCollections.observableArrayList();
+    private BooleanProperty userLogged = new SimpleBooleanProperty(false);
+    private final ListProperty<Contact> contacts = new SimpleListProperty<>();
     private final ObservableList<ChatMessage> chatMessages = FXCollections.observableArrayList();
-    
-    public DataModel(Map<String, Scene> sceneMapping) {
-        this.sceneMapping = sceneMapping;
+
+    public boolean isUserLogged() {
+        return userLogged.get();
     }
 
-    public Map<String, Scene> getSceneMapping() { return sceneMapping; }
+    public BooleanProperty userLoggedProperty() {
+        return userLogged;
+    }
+
+    public void setUserLogged(boolean userLogged) {
+        this.userLogged.set(userLogged);
+    }
 
     public ObservableList<Contact> getContacts() {
+        return contacts.get();
+    }
+
+    public ListProperty<Contact> contactsProperty() {
         return contacts;
+    }
+
+    public void setContacts(ObservableList<Contact> contacts) {
+        this.contacts.set(contacts);
     }
 
     public ObservableList<ChatMessage> getChatMessages() { return chatMessages; }

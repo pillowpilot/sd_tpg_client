@@ -3,7 +3,9 @@ package cliente.controllers;
 import cliente.models.ChatMessage;
 import cliente.models.Contact;
 import cliente.models.DataModel;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -25,7 +27,10 @@ public class ChatController {
     public void setDataModel(@NotNull DataModel dataModel) {
         this.dataModel = dataModel;
 
-        contacts.setItems(dataModel.getContacts());
+        dataModel.contactsProperty().addListener((ListChangeListener<Contact>) c ->
+                Platform.runLater(
+                        () -> contacts.setItems((ObservableList<Contact>) c.getList())
+                ));
 
         dataModel.getChatMessages().addListener(new ListChangeListener<ChatMessage>() {
             @Override
