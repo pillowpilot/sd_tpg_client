@@ -16,6 +16,9 @@ public class ClienteDTO {
     private String ip;
     private Integer puerto;
 
+    public ClienteDTO() {
+    }
+    
     public ClienteDTO(Integer id, String nombre, String apellido, String username, String ip, Integer puerto) {
         this.id = id;
         this.nombre = nombre;

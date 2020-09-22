@@ -7,6 +7,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import cliente.models.EstandarDTO;
+import cliente.models.MensajeListaCliente;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -58,7 +59,7 @@ public class UDPListaCliServer {
                 ObjectMapper jsonMapper = new ObjectMapper();
                
               
-                EstandarDTO<ArrayList<ClienteDTO>>  mensaje = jsonMapper.readValue(datoRecibido, EstandarDTO.class);
+                MensajeListaCliente  mensaje = jsonMapper.readValue(datoRecibido, MensajeListaCliente.class);
                
               
                 InetAddress IPAddress = receivePacket.getAddress();
