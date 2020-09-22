@@ -3,6 +3,8 @@ package cliente.controllers;
 import cliente.models.ChatMessage;
 import cliente.models.Contact;
 import cliente.models.DataModel;
+import cliente.models.MensajeLlamada;
+import java.io.PrintWriter;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -65,5 +67,76 @@ public class ChatController {
 
         //String currentChat = chatTextArea.getText();
         //chatTextArea.setText(currentChat + "Some stuff");
+        /*
+            MensajeLlamada mensajeE = new MensajeLlamada();
+            mensajeE.setEstado("0");
+            mensajeE.setMensaje("ok");
+            mensajeE.setTipo_operacion("3");
+            mensajeE.setTexto(messageInput.getParagraphs().toString());
+            mensajeE.setEmisor();
+            mensajeE.setReceptor()
+            SendtoServer(mensajeE);
+        
+        */
     }
+    /**
+     * Método a ejecutarse cuando se haga click sobre el botón Terminar Llamada.
+     * Su nombre debe ser igual al contenido de la propiedad onAction (onAction="#sendMessage").
+     */
+    public void TerminarLlamada(){
+           dataModel.setCallOngoing(false);
+           
+           
+           Contact contact = new Contact("Sistema");
+           
+         
+           dataModel.getChatMessages().add(new ChatMessage(contact, "Lamada Finalizada"));
+
+           
+           MensajeLlamada mensajeE = new MensajeLlamada();
+           mensajeE.setEstado("0");
+           mensajeE.setMensaje("ok");
+           mensajeE.setTipo_operacion("4");
+           mensajeE.setTexto("");
+           
+           /*
+           mensajeE.setEmisor();
+            mensajeE.setReceptor();
+           
+           */
+           SendtoServer(mensajeE);
+    }
+    /**
+     * Método a ejecutarse cuando se haga click sobre el botón Iniciar Llamada.
+     * 
+     */
+     public void IniciarLlamada(){
+           dataModel.setCallOngoing(true);
+           
+           
+           Contact contact = new Contact("Sistema");
+           
+         
+           dataModel.getChatMessages().add(new ChatMessage(contact, "Iniciando Llamada...."));
+
+           
+           MensajeLlamada mensajeE = new MensajeLlamada();
+           mensajeE.setEstado("-1");
+           mensajeE.setMensaje("ok");
+           mensajeE.setTipo_operacion("2");
+           mensajeE.setTexto("");
+          
+           /*
+           mensajeE.setEmisor();
+            mensajeE.setReceptor();
+           
+           */
+           SendtoServer(mensajeE);
+    }
+     
+     public void SendtoServer(MensajeLlamada mensaje){
+     
+         PrintWriter envio = dataModel.getENVIO();
+         envio.println(mensaje);
+     }
 }

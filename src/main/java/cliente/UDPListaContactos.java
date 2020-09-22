@@ -24,7 +24,7 @@ import cliente.models.MensajeLlamada;
 
 /**
  *
- * @author modesto
+ * Solicita al servidor una lista de clientes.
  */
 public class UDPListaContactos implements Callable<ArrayList<ClienteDTO>> {
     private int puertoServidor;
