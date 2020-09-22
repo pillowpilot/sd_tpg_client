@@ -1,12 +1,17 @@
 package cliente.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Objecto de dominio que representa a un contacto disponible.
+ * Además es un Java Bean para automatizar su serialización/deserialización.
  */
 public class Contact {
+    @JsonProperty("usuario")
     private @NotNull String username; // This must be unique
+
+    public Contact() { }
 
     public Contact(@NotNull String username) {
         this.username = username;
@@ -45,6 +50,8 @@ public class Contact {
      */
     @Override
     public String toString() {
-        return username;
+        return "Contact{" +
+                "username='" + username + '\'' +
+                '}';
     }
 }

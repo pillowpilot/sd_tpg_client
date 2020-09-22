@@ -1,27 +1,20 @@
 package cliente;
 
-import cliente.asyncTasks.KeepAvailableContactsUpdated;
 import cliente.models.DataModel;
 import cliente.services.AvailableContactsService;
 import cliente.uiloaders.ChatUILoader;
 import cliente.uiloaders.LoginUILoader;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.beans.binding.Bindings;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
 
 /**
  * Clase responsable de orquestar la aplicación cliente.
