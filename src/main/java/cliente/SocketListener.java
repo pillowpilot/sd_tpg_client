@@ -6,12 +6,12 @@
 package cliente;
 
 import cliente.models.ChatMessage;
-import cliente.models.Contact;
+import models.Contact;
 import cliente.models.DataModel;
 import cliente.models.MensajeLlamada;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
-import java.net.Socket;
+
 /**
      * Proceso que se encarga de recibir los mensajes e imprimir en chat los mensajes necesarios.
      * 

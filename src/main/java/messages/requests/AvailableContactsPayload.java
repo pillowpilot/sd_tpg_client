@@ -1,4 +1,4 @@
-package cliente.messages.requests;
+package messages.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,6 +19,16 @@ public class AvailableContactsPayload extends Payload {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * Segundo método despachante del patrón visitante, según el tipo de dato del visitante.
+     * @param visitor Objeto visitante que procesará las solicitudes del cliente.
+     * @param request Objeto respuesta que almacena los datos a utilizar en el visitante.
+     */
+    @Override
+    public void accept(RequestVisitor visitor, Request request) {
+        visitor.visitAvailableContacts(request, this);
     }
 
     @Override

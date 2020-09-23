@@ -1,6 +1,4 @@
-package cliente.messages.responses;
-
-import cliente.messageVisitors.ResponseVisitor;
+package messages.responses;
 
 /**
  * Clase abstracta para modelar el campo cuerpo de las respuesta del servidor.

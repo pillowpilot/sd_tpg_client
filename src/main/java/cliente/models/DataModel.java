@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.Contact;
 
 public class DataModel {
     private BooleanProperty userLogged = new SimpleBooleanProperty(false);

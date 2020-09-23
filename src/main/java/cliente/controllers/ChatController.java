@@ -1,7 +1,7 @@
 package cliente.controllers;
 
 import cliente.models.ChatMessage;
-import cliente.models.Contact;
+import models.Contact;
 import cliente.models.DataModel;
 import cliente.models.MensajeLlamada;
 import java.io.PrintWriter;

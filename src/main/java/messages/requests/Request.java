@@ -1,4 +1,4 @@
-package cliente.messages.requests;
+package messages.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -21,6 +21,7 @@ public class Request {
     @JsonSubTypes(value = {
             @JsonSubTypes.Type(value = AvailableContactsPayload.class, name = "1"),
             @JsonSubTypes.Type(value = RegistrationAttemptPayload.class, name = "5"),
+            @JsonSubTypes.Type(value = UnregisterPayload.class, name = "6"),
     })
     private Payload payload;
 
@@ -57,6 +58,15 @@ public class Request {
 
     public void setPayload(Payload payload) {
         this.payload = payload;
+    }
+
+    /**
+     * Método para despachar según el tipo de dato de la respuesta del servidor.
+     * Se utiliza Payload.accept como intermediario para componer la información sobre @{this} y el payload.
+     * @param visitor Objeto visitante que procesará las respuestas del servidor.
+     */
+    public void accept(RequestVisitor visitor) {
+        payload.accept(visitor, this);
     }
 
     @Override

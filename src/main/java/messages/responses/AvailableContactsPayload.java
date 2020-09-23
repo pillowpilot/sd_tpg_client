@@ -1,7 +1,6 @@
-package cliente.messages.responses;
+package messages.responses;
 
-import cliente.messageVisitors.ResponseVisitor;
-import cliente.models.Contact;
+import models.Contact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

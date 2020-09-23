@@ -1,8 +1,8 @@
 import cliente.messageVisitors.ResponseProcessor;
-import cliente.messages.responses.AvailableContactsPayload;
-import cliente.messages.responses.RegistrationAttemptPayload;
-import cliente.messages.responses.Response;
-import cliente.models.Contact;
+import messages.responses.AvailableContactsPayload;
+import messages.responses.RegistrationAttemptPayload;
+import messages.responses.Response;
+import models.Contact;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 

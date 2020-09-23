@@ -1,5 +1,6 @@
 package cliente.models;
 
+import models.Contact;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatMessage {

@@ -1,4 +1,4 @@
-package cliente.messages.responses;
+package messages.responses;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

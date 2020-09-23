@@ -1,4 +1,4 @@
-package cliente.messages.requests;
+package messages.requests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

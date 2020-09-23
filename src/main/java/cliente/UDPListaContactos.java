@@ -4,8 +4,6 @@
 package cliente;
 
 import cliente.models.ClienteDTO;
-import cliente.models.Contact;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,9 +15,8 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import cliente.models.EstandarDTO;
+
 import cliente.models.MensajeListaCliente;
-import cliente.models.MensajeLlamada;
 
 
 /**

@@ -1,4 +1,4 @@
-import cliente.messages.requests.*;
+import messages.requests.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 

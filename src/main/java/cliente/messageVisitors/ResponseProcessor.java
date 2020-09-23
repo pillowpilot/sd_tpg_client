@@ -1,8 +1,9 @@
 package cliente.messageVisitors;
 
-import cliente.messages.responses.AvailableContactsPayload;
-import cliente.messages.responses.RegistrationAttemptPayload;
-import cliente.messages.responses.Response;
+import messages.responses.AvailableContactsPayload;
+import messages.responses.RegistrationAttemptPayload;
+import messages.responses.Response;
+import messages.responses.ResponseVisitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;

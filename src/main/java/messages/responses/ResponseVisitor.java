@@ -1,8 +1,4 @@
-package cliente.messageVisitors;
-
-import cliente.messages.responses.AvailableContactsPayload;
-import cliente.messages.responses.RegistrationAttemptPayload;
-import cliente.messages.responses.Response;
+package messages.responses;
 
 /**
  * Inteface para visitantes, parte del patrón visitante sobre las respuestas del servidor.

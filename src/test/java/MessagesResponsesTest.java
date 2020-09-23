@@ -1,5 +1,5 @@
-import cliente.messages.responses.*;
-import cliente.models.Contact;
+import messages.responses.*;
+import models.Contact;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
