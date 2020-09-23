@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Administra una conexión TCP con el servidor.
@@ -16,6 +17,7 @@ import java.util.concurrent.BlockingQueue;
  * @see <a href="https://www.baeldung.com/java-blocking-queue">Detalles sobre productor-consumidor</a>
  */
 public class TCPConnectionManager implements Runnable{
+    public static final Integer TO_SEND_QUEUE_TIMEOUT = 50; // In milliseconds.
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
@@ -56,10 +58,17 @@ public class TCPConnectionManager implements Runnable{
             System.out.println("Connection established.");
 
             keepRunning = true;
-            while (keepRunning) {
+            while (keepRunning || !pendingMessagesToSend.isEmpty()) {
 
-                if(!pendingMessagesToSend.isEmpty())
-                    out.println(pendingMessagesToSend.take()); // .take() is blocking
+                String json_message;
+
+                // Try to send a datagram or timeout after this.TO_SEND_QUEUE_TIMEOUT ms.
+                if ((json_message = pendingMessagesToSend.poll(TO_SEND_QUEUE_TIMEOUT, TimeUnit.MILLISECONDS)) != null) {
+                    out.println(json_message);
+                }
+
+                Thread.sleep(50);
+
 
                 String receivedMessage = in.readLine(); // Blocking // TODO Find an non-blocking reading method!
                 if(receivedMessage == null)

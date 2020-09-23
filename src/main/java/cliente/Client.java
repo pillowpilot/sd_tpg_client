@@ -24,7 +24,7 @@ public class Client extends Application {
     private static final String serverIp = "localhost";
     private static final Integer serverPort = 9876;
 
-    //
+    // FXML filenames
     private static final String loginUIFilename = "/login_ui.fxml";
     private static final String chatUIFilename = "/client_ui.fxml";
 

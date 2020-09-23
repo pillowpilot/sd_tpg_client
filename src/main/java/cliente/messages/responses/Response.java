@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  */
 public class Response {
     @JsonProperty("estado")
-    private Integer state;
+    private String state;
     @JsonProperty("mensaje")
     private String message;
     @JsonProperty("tipo_operacion")
@@ -28,11 +28,11 @@ public class Response {
     public Response() {
     }
 
-    public Integer getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -72,7 +72,7 @@ public class Response {
     @Override
     public String toString() {
         return "Response{" +
-                "state=" + state +
+                "state='" + state + '\'' +
                 ", message='" + message + '\'' +
                 ", operationType='" + operationType + '\'' +
                 ", payload=" + payload +

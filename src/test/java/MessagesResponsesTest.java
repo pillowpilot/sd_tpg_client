@@ -19,7 +19,7 @@ public class MessagesResponsesTest {
         final String username = "a random username";
         payload.setUsername(username);
         Response response = new Response();
-        response.setState(0);
+        response.setState("0");
         response.setMessage("ok");
         response.setOperationType("5");
         response.setPayload(payload);
@@ -43,7 +43,7 @@ public class MessagesResponsesTest {
         ResponseUnmarshaller unmarshaller = new ResponseUnmarshaller();
         Response response = unmarshaller.fromJSON(json_message);
 
-        assertEquals(response.getState(), 0);
+        assertEquals(response.getState(), "0");
         assertEquals(response.getMessage(), "ok");
         assertEquals(response.getOperationType(), "5");
         // Notar que Jackson deserializa a la subclase correcta
@@ -64,7 +64,7 @@ public class MessagesResponsesTest {
         availableContacts.add(new Contact("usernameB"));
         payload.setAvailableContacts(availableContacts);
         Response response = new Response();
-        response.setState(0);
+        response.setState("0");
         response.setMessage("ok");
         response.setOperationType("1");
         response.setPayload(payload);
@@ -89,7 +89,7 @@ public class MessagesResponsesTest {
         ResponseUnmarshaller unmarshaller = new ResponseUnmarshaller();
         Response response = unmarshaller.fromJSON(json_message);
 
-        assertEquals(response.getState(), 0);
+        assertEquals(response.getState(), "0");
         assertEquals(response.getMessage(), "ok");
         assertEquals(response.getOperationType(), "1");
         // Notar que Jackson deserializa a la subclase correcta
@@ -107,7 +107,7 @@ public class MessagesResponsesTest {
         ResponseUnmarshaller unmarshaller = new ResponseUnmarshaller();
         Response response = unmarshaller.fromJSON(json_message);
 
-        assertEquals(response.getState(), 0);
+        assertEquals(response.getState(), "0");
         assertEquals(response.getMessage(), "ok");
         assertEquals(response.getOperationType(), "1");
         // Notar que Jackson deserializa a la subclase correcta
